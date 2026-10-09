@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PROYECTA-IA: asistente para la Evaluación Técnica de Proyectos de Grado de Ingeniería Electrónica.">
+  <title>PROYECTA-IA | Evaluación Técnica</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="access-locked">
+
+  <div id="accessGate" class="access-gate">
+    <div class="access-card">
+      <div class="access-logo">P</div>
+      <h2>Acceso a PROYECTA-IA</h2>
+      <p class="access-subtitle">Evaluación Técnica del Proyecto de Grado</p>
+      <p>Ingresa tu número de Carnet de Identidad autorizado.</p>
+      <label for="ciAccess">Número de C.I.</label>
+      <input id="ciAccess" type="password" inputmode="numeric" autocomplete="off" placeholder="Solo números">
+      <button id="accessBtn" class="primary access-button" type="button">Ingresar</button>
+      <p id="accessMessage" class="access-message" aria-live="polite"></p>
+      <p class="access-privacy">El acceso se valida mediante la base central de PROYECTA-IA.</p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <div class="brand-mark">P</div>
+        <div>
+          <h1>PROYECTA-IA</h1>
+          <p>Evaluación Técnica · Ingeniería Electrónica</p>
+          <p class="author">Realizado por: Luis Cabezas Tito, Ph. D.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="badge">MEDIR · COMPARAR · INTERPRETAR</div>
+        <button id="logoutBtn" class="logout-btn hidden" type="button">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">ETAPA POSTERIOR A LAS PRUEBAS FUNCIONALES</span>
+      <h2>EVALUACIÓN TÉCNICA: <span>¿qué tan bien funciona el sistema y contra qué referencia puede defenderse?</span></h2>
+      <p>
+        Este módulo transforma los resultados de las pruebas en indicadores cuantitativos y cualitativos.
+        La evaluación puede aplicarse al sistema completo, a un subsistema, al hardware, al software,
+        al firmware o a un componente/dispositivo específico.
+      </p>
+
+      <div class="scope-warning">
+        <strong>Regla central:</strong> ningún resultado se declara “bueno”, “preciso”, “confiable” o “eficiente”
+        sin un <b>criterio de comparación previamente definido y documentado</b>. El criterio puede provenir de
+        una norma, especificación del fabricante, libro técnico, página oficial, modelo matemático, simulación,
+        requerimiento de diseño u otra fuente defendible.
+      </div>
+
+      <div class="hero-grid">
+        <article><span>①</span><strong>Definir qué se evalúa</strong><p>Sistema, subsistema, hardware, software, firmware o dispositivo.</p></article>
+        <article><span>②</span><strong>Elegir indicadores</strong><p>Solo los pertinentes al objetivo y a la mención.</p></article>
+        <article><span>③</span><strong>Calcular</strong><p>Errores, estadísticos, confiabilidad, eficiencia, QoS, control, etc.</p></article>
+        <article><span>④</span><strong>Comparar e interpretar</strong><p>Resultado vs. criterio externo, con una conclusión técnica sustentada.</p></article>
+      </div>
+    </section>
+
+    <nav class="section-nav">
+      <a href="#contexto">Contexto</a>
+      <a href="#objeto">Objeto evaluado</a>
+      <a href="#indicadores">Indicadores</a>
+      <a href="#conceptos">Conceptos</a>
+      <a href="#referencia">Referencia externa</a>
+      <a href="#calculadoras">Cálculos</a>
+      <a href="#matriz">Matriz</a>
+      <a href="#interpretacion">Interpretación</a>
+      <a href="#revisor">Revisor</a>
+      <a href="#fuentes">Fuentes</a>
+    </nav>
+
+    <section id="contexto" class="card">
+      <span class="section-number">1</span>
+      <h3>CONTEXTO DEL PROYECTO Y TRAZABILIDAD</h3>
+      <p>La selección de indicadores debe partir del problema y, sobre todo, de los objetivos que el proyecto prometió cumplir.</p>
+
+      <label for="projectTitle">Título del Proyecto de Grado</label>
+      <textarea id="projectTitle" rows="2" placeholder="Título aprobado"></textarea>
+
+      <label for="problemStatement">Problema principal</label>
+      <textarea id="problemStatement" rows="4" placeholder="Problema cuantitativo o técnico que motivó el proyecto."></textarea>
+
+      <label for="problemQuestion">Formulación del problema</label>
+      <textarea id="problemQuestion" rows="3" placeholder="¿Cómo...?"></textarea>
+
+      <label for="generalObjective">Objetivo General</label>
+      <textarea id="generalObjective" rows="4" placeholder="Objetivo General aprobado"></textarea>
+
+      <label for="specificObjectives">Objetivos Específicos</label>
+      <textarea id="specificObjectives" rows="9" placeholder="Pega un objetivo por línea."></textarea>
+
+      <div class="two-col">
+        <div>
+          <label for="mention">Mención / orientación</label>
+          <select id="mention">
+            <option value="control">Control y Automatización</option>
+            <option value="telecom">Telecomunicaciones</option>
+            <option value="electromed">Electromedicina</option>
+            <option value="general">Electrónica / Sistemas embebidos</option>
+          </select>
+        </div>
+        <div>
+          <label for="projectSystem">Sistema desarrollado</label>
+          <input id="projectSystem" placeholder="Ej.: sistema de monitoreo IoT de energía">
+        </div>
+      </div>
+
+      <button id="suggestIndicatorsBtn" class="primary" type="button">Sugerir indicadores según mis objetivos</button>
+      <div id="suggestionOutput" class="output-box hidden"></div>
+    </section>
+
+    <section id="objeto" class="card">
+      <span class="section-number">2</span>
+      <h3>¿QUÉ SE VA A EVALUAR?</h3>
+      <p>Una misma evaluación técnica puede tener varios niveles. Define el objeto antes de seleccionar el indicador.</p>
+
+      <div class="target-grid">
+        <article><b>Sistema completo</b><span class="mini">Desempeño global y cumplimiento del propósito.</span></article>
+        <article><b>Subsistema</b><span class="mini">Sensado, alimentación, comunicación, control, interfaz, etc.</span></article>
+        <article><b>Componente/dispositivo</b><span class="mini">Sensor, ADC, fuente, relé, módulo RF, equipo biomédico, etc.</span></article>
+        <article><b>Algoritmo/firmware</b><span class="mini">Lógica, temporización, filtrado, comunicaciones, alarmas.</span></article>
+      </div>
+
+      <div class="three-col">
+        <div>
+          <label for="targetLayer">Categoría principal</label>
+          <select id="targetLayer">
+            <option value="hardware">Hardware</option>
+            <option value="software">Software</option>
+            <option value="firmware">Firmware</option>
+            <option value="integrated">Sistema integrado</option>
+          </select>
+        </div>
+        <div>
+          <label for="targetLevel">Nivel</label>
+          <select id="targetLevel">
+            <option>Sistema completo</option>
+            <option>Subsistema</option>
+            <option>Componente / dispositivo</option>
+            <option>Algoritmo / módulo de software</option>
+          </select>
+        </div>
+        <div>
+          <label for="targetName">Nombre del elemento</label>
+          <input id="targetName" placeholder="Ej.: sensor SCT-013 / enlace Wi-Fi / controlador PID">
+        </div>
+      </div>
+
+      <label for="targetPurpose">¿Qué función debe cumplir este elemento?</label>
+      <textarea id="targetPurpose" rows="4" placeholder="Describe la función cuya calidad deseas evaluar."></textarea>
+    </section>
+
+    <section id="indicadores" class="card">
+      <span class="section-number">3</span>
+      <h3>SELECCIONA QUÉ INDICADORES DESEAS EVALUAR</h3>
+      <p>
+        No todos los proyectos necesitan todos los indicadores. Elige los que puedan demostrarse con tus datos
+        y tengan relación con los objetivos. PROYECTA-IA resaltará los recomendados.
+      </p>
+
+      <div class="counter-bar">
+        <span id="indicatorCounter" class="counter-badge">0 indicadores seleccionados</span>
+        <span id="indicatorAdvice">Primero usa “Sugerir indicadores” o selecciona manualmente.</span>
+      </div>
+
+      <div class="indicator-toolbar">
+        <input id="indicatorSearch" placeholder="Buscar: precisión, latencia, MTBF, seguridad...">
+        <button id="selectRecommendedBtn" type="button">Seleccionar recomendados</button>
+        <button id="clearIndicatorsBtn" type="button">Limpiar selección</button>
+      </div>
+
+      <div id="indicatorGroups" class="indicator-groups"></div>
+    </section>
+
+    <section id="conceptos" class="card">
+      <span class="section-number">4</span>
+      <h3>CONCEPTOS Y FÓRMULAS QUE DEBE RECORDAR EL ESTUDIANTE</h3>
+
+      <div class="concept-grid">
+        <article>
+          <h4>Exactitud de medición</h4>
+          <p>Cercanía entre un valor medido y el valor verdadero del mensurando. El VIM advierte que la exactitud no es una magnitud a la que se asigne directamente un valor numérico.</p>
+          <small>En el proyecto se sustenta mediante errores, incertidumbre y comparación con referencia.</small>
+        </article>
+        <article>
+          <h4>Precisión / repetibilidad</h4>
+          <p>Concordancia entre resultados obtenidos mediante mediciones repetidas bajo condiciones especificadas.</p>
+          <div class="formula">s = √[Σ(xᵢ − x̄)²/(n−1)]</div>
+        </article>
+        <article>
+          <h4>Error absoluto y relativo</h4>
+          <div class="formula">e = x − xref &nbsp;&nbsp; |e| = |x − xref|</div>
+          <div class="formula">e% = |e| / |xref| × 100</div>
+          <small>Si xref = 0, el error relativo porcentual no debe calcularse de esta manera.</small>
+        </article>
+        <article>
+          <h4>Media y varianza muestral</h4>
+          <div class="formula">x̄ = (1/n)Σxᵢ</div>
+          <div class="formula">s² = Σ(xᵢ−x̄)²/(n−1)</div>
+        </article>
+        <article>
+          <h4>MAE y RMSE</h4>
+          <div class="formula">MAE = (1/n)Σ|xᵢ−xrefᵢ|</div>
+          <div class="formula">RMSE = √[(1/n)Σ(xᵢ−xrefᵢ)²]</div>
+        </article>
+        <article>
+          <h4>Disponibilidad</h4>
+          <div class="formula">A = Top / (Top + Tfuera) × 100</div>
+          <small>Debe acompañarse del periodo de observación y definición de “falla”.</small>
+        </article>
+        <article>
+          <h4>MTBF y MTTR</h4>
+          <div class="formula">MTBF = tiempo operativo / Nº fallas</div>
+          <div class="formula">MTTR = tiempo de reparación / Nº fallas</div>
+        </article>
+        <article>
+          <h4>Eficiencia energética</h4>
+          <div class="formula">η = salida útil / entrada × 100</div>
+          <small>Solo si “salida útil” e “entrada” están físicamente bien definidas. También puede evaluarse consumo energético respecto a una línea base.</small>
+        </article>
+        <article>
+          <h4>Eficacia</h4>
+          <div class="formula">Eficacia = resultado alcanzado / objetivo cuantificado × 100</div>
+          <small>Úsala solo cuando el objetivo tenga una meta numérica comparable.</small>
+        </article>
+        <article>
+          <h4>Productividad</h4>
+          <div class="formula">Productividad = salida útil / recurso utilizado</div>
+          <small>Define claramente cuál es la salida y cuál el recurso: tiempo, energía, memoria, operaciones, etc.</small>
+        </article>
+        <article>
+          <h4>Control automático</h4>
+          <div class="formula">Mp% = (ypico − yss)/|yss − y0| × 100</div>
+          <p>También pueden usarse tiempo de subida, tiempo de establecimiento, error estacionario, IAE, ISE o ITAE según el objetivo.</p>
+        </article>
+        <article>
+          <h4>Telecomunicaciones / QoS</h4>
+          <div class="formula">Pérdida% = paquetes perdidos / enviados × 100</div>
+          <div class="formula">Throughput = bits útiles recibidos / tiempo</div>
+        </article>
+      </div>
+
+      <div class="notice amber">
+        <strong>Exactitud ≠ precisión.</strong> Una serie puede ser muy repetible (precisa) y, sin embargo, estar desplazada del valor de referencia.
+        El chatbot revisará que no se utilicen ambos términos como sinónimos.
+      </div>
+    </section>
+
+    <section id="referencia" class="card">
+      <span class="section-number">5</span>
+      <h3>FUENTE EXTERNA Y CRITERIO DE ACEPTACIÓN</h3>
+      <p>Antes de decidir si el resultado cumple o no cumple, documenta de dónde sale el valor con el que lo compararás.</p>
+
+      <div class="source-type-grid">
+        <article><b>Norma / recomendación</b><p>ISO, IEC, IEEE, ITU, reglamento técnico u otra fuente aplicable.</p></article>
+        <article><b>Fabricante / datasheet</b><p>Especificación oficial de sensor, microcontrolador, fuente, transceptor, etc.</p></article>
+        <article><b>Libro / artículo técnico</b><p>Modelo, rango o indicador publicado y contextualizado.</p></article>
+        <article><b>Modelo matemático</b><p>Valor teórico obtenido de ecuaciones y supuestos claramente declarados.</p></article>
+        <article><b>Simulación</b><p>Resultado de MATLAB, Simulink, Proteus u otra herramienta, con parámetros documentados.</p></article>
+        <article><b>Instrumento de referencia</b><p>Medición patrón o de mayor desempeño metrológico.</p></article>
+        <article><b>Línea base</b><p>Desempeño antes de implementar la solución o sistema convencional comparable.</p></article>
+        <article><b>Requerimiento de diseño</b><p>Meta cuantificada y justificada desde los objetivos o especificaciones del proyecto.</p></article>
+      </div>
+
+      <div class="warning-strong">
+        <strong>No inventes el umbral.</strong> Si una fuente solo define el indicador, pero no un límite de aceptación universal,
+        el estudiante debe establecer y justificar su propio criterio de diseño o buscar una fuente que sí corresponda al contexto.
+      </div>
+
+      <button id="buildIndicatorMatrixBtn" class="primary" type="button">Preparar matriz de indicadores seleccionados</button>
+      <div id="indicatorMatrixOutput" class="matrix-wrap"></div>
+    </section>
+
+    <section id="calculadoras" class="card">
+      <span class="section-number">6</span>
+      <h3>CALCULADORAS PARA LA EVALUACIÓN TÉCNICA</h3>
+      <p>Introduce datos reales. PROYECTA-IA calcula; el estudiante debe justificar el criterio y explicar el significado.</p>
+
+      <div class="calc-tabs">
+        <button class="calc-tab active" data-panel="calcStats" type="button">Estadística</button>
+        <button class="calc-tab" data-panel="calcErrors" type="button">Errores</button>
+        <button class="calc-tab" data-panel="calcReliability" type="button">Confiabilidad</button>
+        <button class="calc-tab" data-panel="calcPerformance" type="button">Eficiencia / eficacia</button>
+        <button class="calc-tab" data-panel="calcTelecom" type="button">Telecom / QoS</button>
+        <button class="calc-tab" data-panel="calcControl" type="button">Control</button>
+      </div>
+
+      <div id="calcStats" class="calc-panel active">
+        <label for="statsData">Serie de mediciones (una por línea o separadas por punto y coma)</label>
+        <textarea id="statsData" rows="8" placeholder="25,1&#10;25,0&#10;25,2&#10;..."></textarea>
+        <button id="calcStatsBtn" class="primary" type="button">Calcular media, varianza y desviación</button>
+        <div id="statsOutput" class="output-box hidden"></div>
+      </div>
+
+      <div id="calcErrors" class="calc-panel">
+        <div class="two-col">
+          <div><label for="refData">Valores de referencia</label><textarea id="refData" rows="8" placeholder="20&#10;24&#10;28&#10;32"></textarea></div>
+          <div><label for="measuredData">Valores medidos</label><textarea id="measuredData" rows="8" placeholder="20,3&#10;24,1&#10;28,4&#10;31,8"></textarea></div>
+        </div>
+        <button id="calcErrorsBtn" class="primary" type="button">Calcular errores, MAE, RMSE y sesgo</button>
+        <div id="errorsOutput" class="output-box hidden"></div>
+      </div>
+
+      <div id="calcReliability" class="calc-panel">
+        <div class="three-col">
+          <div><label for="totalTime">Tiempo total de observación</label><input id="totalTime" inputmode="decimal" placeholder="72"></div>
+          <div><label for="downTime">Tiempo fuera de servicio</label><input id="downTime" inputmode="decimal" placeholder="1,5"></div>
+          <div><label for="failures">Número de fallas</label><input id="failures" type="number" min="0" placeholder="2"></div>
+        </div>
+        <div class="two-col">
+          <div><label for="repairTime">Tiempo total de reparación</label><input id="repairTime" inputmode="decimal" placeholder="1,5"></div>
+          <div><label for="timeUnit">Unidad de tiempo</label><input id="timeUnit" value="h" placeholder="h, min, s"></div>
+        </div>
+        <button id="calcReliabilityBtn" class="primary" type="button">Calcular disponibilidad, MTBF y MTTR</button>
+        <div id="reliabilityOutput" class="output-box hidden"></div>
+      </div>
+
+      <div id="calcPerformance" class="calc-panel">
+        <div class="four-col">
+          <div><label for="usefulOutput">Salida útil</label><input id="usefulOutput" inputmode="decimal" placeholder="80"></div>
+          <div><label for="inputResource">Entrada / recurso</label><input id="inputResource" inputmode="decimal" placeholder="100"></div>
+          <div><label for="achieved">Resultado alcanzado</label><input id="achieved" inputmode="decimal" placeholder="93"></div>
+          <div><label for="target">Meta objetivo</label><input id="target" inputmode="decimal" placeholder="95"></div>
+        </div>
+        <button id="calcPerformanceBtn" class="primary" type="button">Calcular eficiencia y eficacia</button>
+        <div id="performanceOutput" class="output-box hidden"></div>
+      </div>
+
+      <div id="calcTelecom" class="calc-panel">
+        <div class="four-col">
+          <div><label for="sentPackets">Paquetes enviados</label><input id="sentPackets" type="number" min="0" placeholder="1000"></div>
+          <div><label for="receivedPackets">Paquetes recibidos</label><input id="receivedPackets" type="number" min="0" placeholder="990"></div>
+          <div><label for="usefulBits">Bits útiles recibidos</label><input id="usefulBits" inputmode="decimal" placeholder="8000000"></div>
+          <div><label for="transferSeconds">Tiempo de transferencia (s)</label><input id="transferSeconds" inputmode="decimal" placeholder="10"></div>
+        </div>
+        <label for="delayData">Retardos medidos en ms (opcional)</label>
+        <textarea id="delayData" rows="6" placeholder="25&#10;28&#10;27&#10;31&#10;..."></textarea>
+        <button id="calcTelecomBtn" class="primary" type="button">Calcular pérdida, throughput y retardo</button>
+        <div id="telecomOutput" class="output-box hidden"></div>
+      </div>
+
+      <div id="calcControl" class="calc-panel">
+        <div class="four-col">
+          <div><label for="y0">Valor inicial y₀</label><input id="y0" inputmode="decimal" placeholder="20"></div>
+          <div><label for="yss">Valor final / referencia yss</label><input id="yss" inputmode="decimal" placeholder="28"></div>
+          <div><label for="ypeak">Valor pico</label><input id="ypeak" inputmode="decimal" placeholder="30"></div>
+          <div><label for="yfinal">Valor observado en régimen</label><input id="yfinal" inputmode="decimal" placeholder="27,8"></div>
+        </div>
+        <button id="calcControlBtn" class="primary" type="button">Calcular sobreimpulso y error estacionario</button>
+        <div id="controlOutput" class="output-box hidden"></div>
+      </div>
+    </section>
+
+    <section id="matriz" class="card">
+      <span class="section-number">7</span>
+      <h3>MATRIZ FINAL DE EVALUACIÓN TÉCNICA</h3>
+      <p>
+        Esta matriz debe resumir la evaluación defendible: elemento evaluado, indicador, fórmula/método,
+        resultado, fuente externa, criterio, comparación, decisión técnica y evidencia.
+      </p>
+      <button id="buildFinalMatrixBtn" class="primary" type="button">Generar matriz final</button>
+      <button id="copyFinalMatrixBtn" type="button">Copiar como TSV</button>
+      <div id="finalMatrixOutput" class="matrix-wrap"></div>
+    </section>
+
+    <section id="interpretacion" class="card">
+      <span class="section-number">8</span>
+      <h3>INTERPRETACIÓN OBLIGATORIA DE CADA RESULTADO</h3>
+      <p>
+        Un número aislado no constituye evaluación técnica. Por cada indicador debe existir un texto que explique:
+        qué se calculó, qué valor se obtuvo, con qué se comparó, si cumple y qué implica para el proyecto.
+      </p>
+
+      <div class="interpretation-builder">
+        <div class="interpret-card">
+          <h4>Constructor de interpretación</h4>
+          <label for="interpIndicator">Indicador</label>
+          <input id="interpIndicator" placeholder="Ej.: disponibilidad">
+          <div class="two-col">
+            <div><label for="interpResult">Resultado</label><input id="interpResult" placeholder="97,9"></div>
+            <div><label for="interpUnit">Unidad</label><input id="interpUnit" placeholder="%"></div>
+          </div>
+          <label for="interpSource">Fuente externa / referencia</label>
+          <input id="interpSource" placeholder="Ej.: requisito de diseño / ITU-T / datasheet / libro...">
+          <div class="two-col">
+            <div><label for="interpCriterion">Valor criterio</label><input id="interpCriterion" placeholder="95"></div>
+            <div><label for="interpDirection">Condición</label>
+              <select id="interpDirection">
+                <option value="ge">Resultado ≥ criterio</option>
+                <option value="le">Resultado ≤ criterio</option>
+                <option value="eq">Resultado ≈ criterio</option>
+                <option value="range">Dentro de rango</option>
+                <option value="manual">Evaluación cualitativa/manual</option>
+              </select>
+            </div>
+          </div>
+          <label for="interpMeaning">Implicación técnica / observación</label>
+          <textarea id="interpMeaning" rows="4" placeholder="¿Qué significa para el hardware, software, firmware o para el objetivo?"></textarea>
+          <button id="buildInterpretationBtn" class="primary" type="button">Generar párrafo base</button>
+        </div>
+        <div>
+          <div id="interpretationOutput" class="output-box">
+            <h4>El párrafo aparecerá aquí</h4>
+            <p class="small">PROYECTA-IA no inventará la fuente ni el criterio. Debes ingresarlos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="revisor" class="card">
+      <span class="section-number">9</span>
+      <h3>REVISOR INTEGRAL DE LA EVALUACIÓN TÉCNICA</h3>
+      <p>Pega la sección de Evaluación Técnica. El revisor buscará indicadores, cálculos, fuentes externas, criterios de aceptación e interpretación.</p>
+
+      <label for="evaluationText">Texto del estudiante</label>
+      <textarea id="evaluationText" rows="18" placeholder="Pega aquí la evaluación técnica..."></textarea>
+      <button id="reviewEvaluationBtn" class="primary" type="button">Emitir dictamen</button>
+      <button id="copyDeepPromptBtn" type="button">Copiar prompt para revisión profunda en ChatGPT</button>
+      <div id="reviewOutput" class="output-box hidden"></div>
+      <span id="promptStatus" class="small"></span>
+    </section>
+
+    <section id="fuentes" class="card">
+      <span class="section-number">10</span>
+      <h3>REFERENCIAS TÉCNICAS DE ORIENTACIÓN</h3>
+      <div class="references-list">
+        <p><b>Metrología:</b> JCGM 200:2012 (VIM) y Guías JCGM/GUM para conceptos de medición, error e incertidumbre.</p>
+        <p><b>Software / firmware / ICT:</b> ISO/IEC 25010:2023 como modelo de calidad del producto ICT/software.</p>
+        <p><b>Telecomunicaciones:</b> ITU-T Y.1540 para parámetros de desempeño IP e ITU-T Y.1541 para objetivos/clases de QoS cuando sean aplicables.</p>
+        <p><b>Control:</b> métricas de respuesta transitoria como tiempo de subida, tiempo de establecimiento y sobreimpulso; el criterio debe provenir del diseño, modelo, simulación o bibliografía pertinente.</p>
+        <p><b>Electromedicina:</b> IEC 60601-1 para seguridad básica y desempeño esencial; IEC 62304 para procesos de software de dispositivo médico; ISO 14971:2019 para gestión de riesgos.</p>
+      </div>
+      <div class="notice red">
+        <strong>Importante:</strong> citar una norma no significa que el prototipo esté certificado. La evaluación académica
+        puede utilizar requisitos o conceptos como referencia, pero la conformidad formal exige el procedimiento completo
+        de la norma y, cuando corresponda, laboratorios y organismos competentes.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div><strong>PROYECTA-IA</strong><p>Evaluación Técnica del Proyecto de Grado</p></div>
+      <div class="footer-author">Luis Cabezas Tito, Ph. D.</div>
+    </div>
+  </footer>
+
+  <script src="https://luisctito-sketch.github.io/proyecta-ia-acceso/access.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
